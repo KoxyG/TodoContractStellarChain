@@ -84,11 +84,19 @@ impl TodoContract {
     }
 
     // get a task
-    // pub fn get_task(env: Env) -> u32 {
-    //     let tasks = env.storage().instance().get(&TASKS).unwrap_or_else(|| {
-    //         log!
-    //     });
-    // }
+    pub fn get_task(env: Env, index: u32) -> Option<Task> {
+        let tasks: Vec<Task> = env.storage().instance().get(&TASKS).unwrap_or_else(|| {
+            log!(&env, "No tasks found");
+            Vec::new(&env)
+        });
+        if let Some(task) = tasks.get(index) {
+            log!(&env, "Retrieved task at index: {}", index);
+            Some(task.clone())
+        } else {
+            log!(&env, "No task found at index: {}", index);
+            None
+        }
+    }
 }
 
 mod test;
