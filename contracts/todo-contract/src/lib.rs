@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, log, symbol_short, Env, Symbol, Vec};
+use soroban_sdk::{contract, contractimpl, contracttype, log, symbol_short, Env, String, Symbol, Vec};
 
 const TASKS: Symbol = symbol_short!("TASKS");
 
@@ -7,7 +7,7 @@ const TASKS: Symbol = symbol_short!("TASKS");
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Task {
     title: Symbol,
-    description: Symbol,
+    description: String,
     completed: bool,
 }
 
@@ -19,7 +19,7 @@ pub struct TodoContract;
 #[contractimpl]
 impl TodoContract {
     //add a task
-    pub fn add_todo(env: Env, title: Symbol, description: Symbol) -> u32 {
+    pub fn add_todo(env: Env, title: Symbol, description: String) -> u32 {
         //create an instance
         let mut tasks = env.storage().instance().get(&TASKS).unwrap_or_else(|| {
             log!(&env, "Initializing new task list");
