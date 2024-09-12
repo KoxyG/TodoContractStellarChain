@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, log, symbol_short, vec, Env, Symbol, Vec};
+use soroban_sdk::{contract, contractimpl, contracttype, log, symbol_short, Env, Symbol, Vec};
 
 const TASKS: Symbol = symbol_short!("TASKS");
 
@@ -18,7 +18,8 @@ pub struct TodoContract;
 
 #[contractimpl]
 impl TodoContract {
-    pub fn addTodo(env: Env, title: Symbol, description: Symbol) -> u32 {
+    //add a task
+    pub fn add_todo(env: Env, title: Symbol, description: Symbol) -> u32 {
         //create an instance
         let mut tasks = env.storage().instance().get(&TASKS).unwrap_or_else(|| {
             log!(&env, "Initializing new task list");
@@ -47,6 +48,7 @@ impl TodoContract {
         task_count as u32
     }
 
+    // complete a task
     pub fn complete_task(env: Env, index: u32) -> bool {
         let mut tasks: Vec<Task> = env.storage().instance().get(&TASKS).unwrap_or_else(|| {
             log!(&env, "No tasks found");
@@ -71,6 +73,22 @@ impl TodoContract {
 
 
     }
+
+
+    // get all tasks
+    pub fn get_tasks(env: &Env) -> Vec<Task> {
+        env.storage().instance().get(&TASKS).unwrap_or_else(|| {
+          log!(env, "No tasks found, returning empty list");
+          Vec::new(env)  
+        })
+    }
+
+    // get a task
+    // pub fn get_task(env: Env) -> u32 {
+    //     let tasks = env.storage().instance().get(&TASKS).unwrap_or_else(|| {
+    //         log!
+    //     });
+    // }
 }
 
 mod test;
