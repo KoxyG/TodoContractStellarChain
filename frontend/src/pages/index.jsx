@@ -49,13 +49,7 @@ const TodoContract = new Client.Client({
           const { result } = await TodoContract.get_tasks({});
           console.log("get contract: ", result);
   
-          // Filter out todos with an empty title or empty description
-          // const filteredTodos = contractTodos.filter(todo => 
-          //   todo.title.trim() !== "" && 
-          //   todo.description.trim() !== ""
-          // );
-  
-          // Update state with the filtered todos
+         
           setTodos(result);
         } catch (error) {
           console.error(error);
@@ -74,71 +68,71 @@ const TodoContract = new Client.Client({
     setDescription(e.target.value);
   };
 
-  const DeleteTodo = async (index) => {
-    try {
-      console.log("index: ", index);
+  // const DeleteTodo = async (index) => {
+  //   try {
+  //     console.log("index: ", index);
 
-      const signer = await getSigner();
-      const todoContract = getTodoContractInstance(signer);
+  //     const signer = await getSigner();
+  //     const todoContract = getTodoContractInstance(signer);
 
 
-      const txn = await todoContract.deleteTodo(index);
-      setDeleting(index);
-      await txn.wait();
+  //     const txn = await todoContract.deleteTodo(index);
+  //     setDeleting(index);
+  //     await txn.wait();
       
-      setTodos((prevTodos) => {
-        const updatedTodos = [...prevTodos];
-        updatedTodos.splice(index, 1);
-        return updatedTodos;
-      });
-      setDeleting(null);
+  //     setTodos((prevTodos) => {
+  //       const updatedTodos = [...prevTodos];
+  //       updatedTodos.splice(index, 1);
+  //       return updatedTodos;
+  //     });
+  //     setDeleting(null);
       
-      console.log("txn: ", txn);
+  //     console.log("txn: ", txn);
       
       
-      await txn.wait();
+  //     await txn.wait();
      
 
       
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  const UpdateTodo = async (index) => {
-    try {
-      console.log("index: ", index);
+  // const UpdateTodo = async (index) => {
+  //   try {
+  //     console.log("index: ", index);
   
-      const signer = await getSigner();
-      const todoContract = getTodoContractInstance(signer);
+  //     const signer = await getSigner();
+  //     const todoContract = getTodoContractInstance(signer);
   
-      setToggling(index);
-      // Update the todo status in the contract
-      const txn = await todoContract.updateTodoStatus(index);
+  //     setToggling(index);
+  //     // Update the todo status in the contract
+  //     const txn = await todoContract.updateTodoStatus(index);
   
-      // Wait for the transaction to be mined
-      await txn.wait();
-  
-      
-      const newTodo = await todoContract.showTodo(index);
+  //     // Wait for the transaction to be mined
+  //     await txn.wait();
   
       
-      setTodos((prevTodos) => {
-        const updatedTodos = [...prevTodos];
-        updatedTodos[index] = newTodo;
-        return updatedTodos;
-      });
+  //     const newTodo = await todoContract.showTodo(index);
   
       
-      setToggling(null);
+  //     setTodos((prevTodos) => {
+  //       const updatedTodos = [...prevTodos];
+  //       updatedTodos[index] = newTodo;
+  //       return updatedTodos;
+  //     });
   
-      // Log the updated todo if needed
-      console.log("Updated Todo:", newTodo);
+      
+  //     setToggling(null);
   
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     // Log the updated todo if needed
+  //     console.log("Updated Todo:", newTodo);
+  
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const addTodo = async (e) => {
     e.preventDefault();
